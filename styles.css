@@ -1,0 +1,111 @@
+body, html {
+    height: 100vh;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #EADDCA;
+    font-family: 'Georgia';
+}
+.container {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-columns: 0.4fr 0.5fr 2.1fr 2.1fr 0.5fr 0.4fr;
+    grid-template-rows: 0.6fr 1.8fr 1.1fr 0.5fr;
+    gap: 1px 1px;
+    grid-template-areas: ". . header header . ." ". main main main main ." ". . warning warning . ." ". . footer footer . .";
+  }
+
+  header {
+    grid-area: header;
+    display: flex;
+    font-size: 2.3vw;
+    color: #200c09;
+  }
+
+  main {
+    grid-area: main;
+    text-align: center;
+    background-color: #ffbf47 ;
+    padding: 2vw;
+    margin: 0px;
+    border-radius: .5vw;
+    border-style: solid;
+  }
+
+  img {
+    margin: 0;
+    width: 25%;
+    height: 50%;
+    padding-top: 10px;
+    padding-bottom: 100px;
+  }
+
+  div {
+    font-size: 1vw;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .wrapper {
+    width: 90%;
+    margin: 0 auto;
+    justify-content: space-between;
+  }
+
+  .facts {
+      text-align: left;
+  }
+
+
+
+#nav_menu ul {
+  list-style: none;
+  position: relative;
+  /* So the first submenu can be positioned within the main menu */
+}
+
+#nav_menu ul li {
+  float: left;
+  font-family: "Raleway", sans-serif;
+  font-size: 1em;
+}
+
+#nav_menu ul {
+  width: 200%;
+  margin: 0;
+  padding: 0;
+}
+
+#nav_menu ul li {
+  width: 25%;
+}
+
+#nav_menu ul li a {
+  text-align: center;
+  display: block;
+  padding: 1em;
+  text-decoration: none;
+  background-color: #ffbf47;
+  color: #200c09;
+  font-weight: bold;
+}
+
+#nav_menu ul li a:hover,
+#nav_menu ul li a:focus {
+  background-color: #df573e;
+  color: #ffebe8;
+}
+
+#nav_menu ul li:hover ul {
+  width: 100%;
+}
+
+#nav_menu ul li:hover ul li a {
+  display: block;
+  /* width: 178px; */
+  text-align: center;
+}
