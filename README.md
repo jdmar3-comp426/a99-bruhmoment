@@ -52,3 +52,7 @@ And that is about all you need to get started.
 All the rest of the assignment instructions are available at: https://comp426.johndmart.in/assignments/99
 
 Good skill, and have fun with this!
+
+
+Our writeup:
+files and their meanings:
