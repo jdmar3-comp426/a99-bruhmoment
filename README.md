@@ -34,15 +34,18 @@ index.html: html for rendering the login page
 
 leaderboard.html: html for rendering the leaderboard page
 
+
+
 Our team work-
-Kian: create login/signup scripts, worked with user accounts to save/retrieve user scores, helped with game script front end elements
 
-Garv: created html pages
+Kian (User specialist): create login/signup scripts, worked with user accounts to save/retrieve user scores, helped with game script front end elements
 
-Manas: created html pages
+Garv (Frontend specialist): created html pages
 
-Owen: create entire backend databases and api calls, managed AWS systems, helped with display of leaderboard
+Manas (Frontend specialist): created html pages
 
-Toby: created logic for game script, implemented logic in game_script.js, linked buttons login buttons to game page
+Owen (API/Backend specialist: create entire backend databases and api calls, managed AWS systems, helped with display of leaderboard
+
+Toby (Game specialist): created logic for game script, implemented logic in game_script.js, linked buttons login buttons to game page
 
 
