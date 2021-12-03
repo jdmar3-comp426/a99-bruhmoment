@@ -21,18 +21,43 @@ var generate_word = ()=>{
 
         // console.log(result);
         // console.log(JSON.parse(result).body.word);
-        localStorage.word = JSON.parse(result).body.word;
+        if(JSON.parse(result).body.word.length <= 7){
+            console.log("yes")
+            localStorage.letterBank = "";
+            localStorage.numGuesses = 0;
+            localStorage.word = JSON.parse(result).body.word;
+        }else{
+            generate_word()
+        }
     }).catch(error => console.log('error', error));
+}
+
+function guess_letter(){
+    text_input = document.getElementById("guess_text").value;
+    text_input = text_input.toLowerCase();
+    text_input = text_input.match(/[A-Z]+|[a-z]+/gm)
+
+    if(!(localStorage.letterBank.includes(text_input)) && text_input !== null){
+        localStorage.letterBank = localStorage.letterBank + text_input;
+    }
+    localStorage.numGuesses = parseInt(localStorage.numGuesses) + 1;
+    document.getElementById("guess_text").value = "";
+}
+
+function reset_board(){
+    generate_word();
 }
 
 function draw_board(){
     ctx.fillStyle = "black";
     rendered_word = "";
-    for(letter in localStorage.word){
-        if (localStorage.letterBank.includes(localStorage.word[letter])){
-            rendered_word = rendered_word + " " + localStorage.word[letter];
-        } else{
-            rendered_word = rendered_word + " _ ";
+    if(localStorage.word !== null){
+        for(letter in localStorage.word){
+            if (localStorage.letterBank.includes(localStorage.word[letter])){
+                rendered_word = rendered_word + " " + localStorage.word[letter];
+            } else{
+                rendered_word = rendered_word + " _ ";
+            }
         }
     }
 
@@ -52,13 +77,35 @@ function display(){
 
 }
 
-var keys_pressed = {};
-
+function findUnique(str){
+    return [...str].reduce((acc, curr)=>{
+      return acc.includes(curr) ?  acc  :  acc + curr;
+    }, "")
+  }
 function game_loop(){
-    if (localStorage.word == null){
+    if (localStorage.word === null){
         generate_word()
     }
-    display()
+    if(localStorage.word !== null){
+        display()
+    }
+
+    unique_letters = findUnique(localStorage.word);
+    numletters = unique_letters.length;
+
+    for(letter in unique_letters){
+        if(localStorage.letterBank.includes(unique_letters[letter])){
+            numletters -= 1;
+        }
+    }
+    if(numletters == 0){
+        window.location.replace("../leaderboard.html")
+        //add API call for game finish 
+        //AND reset following variables:
+        // localStorage.word = null;
+        // localStorage.letterBank = "";
+        // localStorage.numGuesses = 0;
+    }
 
     setTimeout(game_loop, 1000/30);
 }
