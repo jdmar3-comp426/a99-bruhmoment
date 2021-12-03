@@ -31,6 +31,26 @@ var generate_word = ()=>{
     }).catch(error => console.log('error', error));
 }
 
+//update score function
+var update_score = (username, score, word) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({"username":username, "score":score, "word":word});
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("https://bjpskapus9.execute-api.us-east-1.amazonaws.com/dev/app/score/update/", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);
+        console.log(JSON.parse(result).body.success);
+    }).catch(error => console.log('error', error));
+}
+
 function guess_letter(){
     text_input = document.getElementById("guess_text").value;
     text_input = text_input.toLowerCase();
@@ -83,7 +103,7 @@ function findUnique(str){
   }
 
 function game_loop(){
-    
+
     if (localStorage.word === null){
         generate_word()
     }
@@ -97,6 +117,7 @@ function game_loop(){
             }
         }
         if(numletters == 0){
+            update_score(localStorage.getItem("username"), (numGuesses/unique_letters.length)*Math.pow(unique_letters.length, 1.3), localStorage.word);
             window.location.replace("../leaderboard.html")
             //add API call for game finish 
             //AND reset following variables:
