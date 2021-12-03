@@ -7,9 +7,9 @@ ctx.textAlign = "center";
 
 //geneate word function
 var generate_word = ()=>{
-    localStorage.word = null;
-    localStorage.letterBank = "";
-    localStorage.numGuesses = 0;
+    // localStorage.setItem("letterBank", "");
+    // localStorage.setItem("numGuesses", 0);
+    // localStorage.setItem("word", null);
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
@@ -22,9 +22,9 @@ var generate_word = ()=>{
         // console.log(result);
         // console.log(JSON.parse(result).body.word);
         if(JSON.parse(result).body.word.length <= 7){
-            localStorage.letterBank = "";
-            localStorage.numGuesses = 0;
-            localStorage.word = JSON.parse(result).body.word;
+            localStorage.setItem("letterBank", "");
+            localStorage.setItem("numGuesses", 0);
+            localStorage.setItem("word", JSON.parse(result).body.word);
         }else{
             generate_word()
         }
@@ -56,10 +56,10 @@ function guess_letter(){
     text_input = text_input.toLowerCase();
     text_input = text_input.match(/[A-Z]+|[a-z]+/gm)
 
-    if(!(localStorage.letterBank.includes(text_input)) && text_input !== null){
-        localStorage.letterBank = localStorage.letterBank + text_input;
+    if(!(localStorage.getItem("letterBank").includes(text_input)) && text_input !== null){
+        localStorage.setItem("letterBank", localStorage.getItem("letterBank") + text_input);
     }
-    localStorage.numGuesses = parseInt(localStorage.numGuesses) + 1;
+    localStorage.setItem("numGuesses", parseInt(localStorage.getItem("numGuesses")) + 1);
     document.getElementById("guess_text").value = "";
 }
 
@@ -68,32 +68,29 @@ function reset_board(){
 }
 
 function draw_board(){
-    ctx.fillStyle = "black";
-    rendered_word = "";
-    if(localStorage.word !== null){
-        for(letter in localStorage.word){
-            if (localStorage.letterBank.includes(localStorage.word[letter])){
-                rendered_word = rendered_word + " " + localStorage.word[letter];
+    if(localStorage.getItem("word") !== null){
+        ctx.fillStyle = "black";
+        rendered_word = "";
+        for(letter in localStorage.getItem("word")){
+            if (localStorage.letterBank.includes(localStorage.getItem("word")[letter])){
+                rendered_word = rendered_word + " " + localStorage.getItem("word")[letter];
             } else{
                 rendered_word = rendered_word + " _ ";
             }
         }
+        ctx.font = '3rem Arial';
+        ctx.fillText(`guesses: ${localStorage.numGuesses}`, canvas.width/2, 0+canvas.height/3.25);
+        ctx.font = '6rem Arial';
+        ctx.fillText(rendered_word, canvas.width/2, 0+canvas.height/1.25);
     }
-
-    ctx.font = '3rem Arial';
-    ctx.fillText(`guesses: ${localStorage.numGuesses}`, canvas.width/2, 0+canvas.height/3.25);
-    ctx.font = '6rem Arial';
-    ctx.fillText(rendered_word, canvas.width/2, 0+canvas.height/1.25);
 }
 
 function display(){
     //draw background
     ctx.fillStyle = "#796D8B";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    //draw board
     draw_board();
-
-
-
 }
 
 function findUnique(str){
@@ -104,10 +101,12 @@ function findUnique(str){
 
 function game_loop(){
 
-    if (localStorage.word === null){
+    if (localStorage.getItem("word") === null){
         generate_word()
+        console.log("true")
     }
-    if(localStorage.word !== null){
+
+    if(localStorage.getItem("word") !== null){
         unique_letters = findUnique(localStorage.word);
         numletters = unique_letters.length;
 
@@ -125,8 +124,8 @@ function game_loop(){
             // localStorage.letterBank = "";
             // localStorage.numGuesses = 0;
         }
-        display();
     }
+    display();
 
     setTimeout(game_loop, 1000/30);
 }

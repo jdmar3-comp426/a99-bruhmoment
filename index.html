@@ -35,7 +35,7 @@
                       <form class="login-form">
                         <input type="text" id="user" placeholder="Username"/>
                         <input type="password" id ="pass" placeholder="Password"/>
-                        <button onclick="login(document.getElementById('user').value, document.getElementById('pass').value)">login</button>
+                        <button type="button" onclick="login(document.getElementById('user').value, document.getElementById('pass').value)">login</button>
                         <p class="message">Not registered? <a href="createAccount.html">Create an account</a></p>
                       </form>
                     </div>
@@ -44,4 +44,9 @@
         </div>
     </body>
     <script src="/scripts/login_manager.js"></script>
+    <script>
+        if(localStorage.getItem("username") !== null){
+            window.location.href = "../gamepage.html";
+        }
+    </script>
 </html>
