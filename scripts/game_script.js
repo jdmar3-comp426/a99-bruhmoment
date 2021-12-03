@@ -22,13 +22,32 @@ var generate_word = ()=>{
         // console.log(result);
         // console.log(JSON.parse(result).body.word);
         if(JSON.parse(result).body.word.length <= 7){
-            console.log("yes")
             localStorage.letterBank = "";
             localStorage.numGuesses = 0;
             localStorage.word = JSON.parse(result).body.word;
         }else{
             generate_word()
         }
+    }).catch(error => console.log('error', error));
+}
+
+//update score function
+var update_score = (username, score, word) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({"username":username, "score":score, "word":word});
+    var requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch("https://bjpskapus9.execute-api.us-east-1.amazonaws.com/dev/app/score/update/", requestOptions)
+    .then(response => response.text())
+    .then(result => {
+        console.log(result);
+        console.log(JSON.parse(result).body.success);
     }).catch(error => console.log('error', error));
 }
 
@@ -82,29 +101,31 @@ function findUnique(str){
       return acc.includes(curr) ?  acc  :  acc + curr;
     }, "")
   }
+
 function game_loop(){
+
     if (localStorage.word === null){
         generate_word()
     }
     if(localStorage.word !== null){
-        display()
-    }
+        unique_letters = findUnique(localStorage.word);
+        numletters = unique_letters.length;
 
-    unique_letters = findUnique(localStorage.word);
-    numletters = unique_letters.length;
-
-    for(letter in unique_letters){
-        if(localStorage.letterBank.includes(unique_letters[letter])){
-            numletters -= 1;
+        for(letter in unique_letters){
+            if(localStorage.letterBank.includes(unique_letters[letter])){
+                numletters -= 1;
+            }
         }
-    }
-    if(numletters == 0){
-        window.location.replace("../leaderboard.html")
-        //add API call for game finish 
-        //AND reset following variables:
-        // localStorage.word = null;
-        // localStorage.letterBank = "";
-        // localStorage.numGuesses = 0;
+        if(numletters == 0){
+            update_score(localStorage.getItem("username"), (numGuesses/unique_letters.length)*Math.pow(unique_letters.length, 1.3), localStorage.word);
+            window.location.replace("../leaderboard.html")
+            //add API call for game finish 
+            //AND reset following variables:
+            // localStorage.word = null;
+            // localStorage.letterBank = "";
+            // localStorage.numGuesses = 0;
+        }
+        display();
     }
 
     setTimeout(game_loop, 1000/30);
