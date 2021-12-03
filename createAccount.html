@@ -33,10 +33,10 @@
                 <div class="login-page">
                     <div class="form">
                       <form class="login-form">
-                        <input type="text" placeholder="Username"/>
-                        <input type="password" placeholder="Password"/>
-                        <input type="password" placeholder="Confirm Password"/>
-                        <button>create</button>
+                        <input type="text" id="user" placeholder="Username"/>
+                        <input type="password" id="pass" placeholder="Password"/>
+                        <input type="password" id="cPass" placeholder="Confirm Password"/>
+                        <button onclick= "create_user(document.getElementById('user').value, document.getElementById('pass').value, 'email')" >create</button>
                         <p class="message">Already have an account? <a href="index.html">Login here</a></p>
                       </form>
                     </div>
@@ -44,4 +44,28 @@
             </main>
         </div>
     </body>
+    <script>
+        var create_user = (username, password, email)=>{
+            // instantiate a headers object
+            var myHeaders = new Headers();
+            // add content type header to object
+            myHeaders.append("Content-Type", "application/json");
+            // using built in JSON utility package turn object to string and store in a variable
+            var raw = JSON.stringify({"username":username, "password":password, "email":email});
+            // create a JSON object with parameters for API call and store in a variable
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+            // make API call with parameters and use promises to get response
+            fetch("https://bjpskapus9.execute-api.us-east-1.amazonaws.com/dev/app/user/new", requestOptions)
+            .then(response => response.text())
+            .then(result => {
+                // if false prompt user to try again with a new username
+                // if true store username as global variable for future use 
+            }).catch(error => console.log('error', error));
+        }
+    </script>
 </html>
