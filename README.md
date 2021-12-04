@@ -6,6 +6,8 @@ api_calls.html: holds all of the various API calls
 
 backend.pdf: details complete workings of the backend (look here for detailed explanations on backend work)
 
+/lambda: folder that contains the python code for each of the lambda functions used in the backend
+
 create_account.js: holds the script with the signup api call as well as the call to create a score for a user, stores username in local storage
 
 game_script.js: holds the scripts needed to generate a word as well as update user score. Runs the hangman game through a variety of different functions.
