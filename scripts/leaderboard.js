@@ -18,8 +18,9 @@ var get_leaderboard = ()=>{
 }
 
 function reset_game(){
-    localStorage.word = null;
-    localStorage.numGuesses = 0;
-    localStorage.setItem("letterbank", "");
+    localStorage.removeItem('word');
+    // localStorage.numGuesses = 0;
+    // localStorage.setItem("letterbank", "");
     window.location.href = "../gamepage.html";
+    return true;
 }

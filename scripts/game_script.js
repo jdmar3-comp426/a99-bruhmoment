@@ -6,29 +6,25 @@ ctx.textAlign = "center";
 
 
 //geneate word function
-var generate_word = ()=>{
-    // localStorage.setItem("letterBank", "");
-    // localStorage.setItem("numGuesses", 0);
-    // localStorage.setItem("word", null);
+async function generate_word(){
     var requestOptions = {
         method: 'GET',
         redirect: 'follow'
     }
-    fetch("https://bjpskapus9.execute-api.us-east-1.amazonaws.com/dev/app/generator", requestOptions)
+    await fetch("https://bjpskapus9.execute-api.us-east-1.amazonaws.com/dev/app/generator", requestOptions)
     .then(response => response.text())
-    .then(result => {
-        // store word to use for game and to send to /app/score/update after game
+    .then(result => find_new_word(result)).catch(error => console.log('error', error));
+}
 
-        // console.log(result);
-        // console.log(JSON.parse(result).body.word);
-        if(JSON.parse(result).body.word.length <= 7){
-            localStorage.setItem("letterBank", "");
-            localStorage.setItem("numGuesses", 0);
-            localStorage.setItem("word", JSON.parse(result).body.word);
-        }else{
-            generate_word()
-        }
-    }).catch(error => console.log('error', error));
+async function find_new_word(result){
+    if(JSON.parse(result).body.word.length <= 9){
+        localStorage.setItem("letterBank", "");
+        localStorage.numGuesses = 0;
+        localStorage.setItem("word", JSON.parse(result).body.word);
+        return true;
+    }else{
+        await generate_word()
+    }
 }
 
 //update score function
@@ -59,12 +55,12 @@ function guess_letter(){
     if(!(localStorage.getItem("letterBank").includes(text_input)) && text_input !== null){
         localStorage.setItem("letterBank", localStorage.getItem("letterBank") + text_input);
     }
-    localStorage.setItem("numGuesses", parseInt(localStorage.getItem("numGuesses")) + 1);
+    localStorage.numGuesses = parseInt(localStorage.numGuesses) + 1
     document.getElementById("guess_text").value = "";
 }
 
-function reset_board(){
-    generate_word();
+async function reset_board(){
+    await generate_word();
 }
 
 function draw_board(){
@@ -99,15 +95,13 @@ function findUnique(str){
     }, "")
   }
 
-function game_loop(){
-
+async function game_loop(){
     if (localStorage.getItem("word") === null){
-        generate_word()
-        console.log("true")
+        await generate_word()
     }
 
     if(localStorage.getItem("word") !== null){
-        unique_letters = findUnique(localStorage.word);
+        unique_letters = findUnique(localStorage.getItem("word"));
         numletters = unique_letters.length;
 
         for(letter in unique_letters){
@@ -116,9 +110,8 @@ function game_loop(){
             }
         }
         if(numletters == 0){
-            update_score(localStorage.getItem("username"), (numGuesses/unique_letters.length)*Math.pow(unique_letters.length, 1.3), localStorage.word);
+            update_score(localStorage.getItem("username"), (unique_letters.length/localStorage.numguesses)*Math.pow(unique_letters.length, 1.3), localStorage.getItem("word"));
             window.location.replace("../leaderboard.html")
-            //add API call for game finish 
             //AND reset following variables:
             // localStorage.word = null;
             // localStorage.letterBank = "";
@@ -130,4 +123,8 @@ function game_loop(){
     setTimeout(game_loop, 1000/30);
 }
 
-game_loop()
+if(localStorage.getItem("username") === null){
+    window.location.href = "../index.html";
+}else{
+    game_loop()
+}
