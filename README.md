@@ -2,9 +2,11 @@
 
 ## Files and Their Meanings-
 
-api_calls.html: holds all of the various API calls 
+api_calls.html: html page with every api call attached to a form where output is logged to the console used as a template for api calls in frontend
 
 backend.pdf: details complete workings of the backend (look here for detailed explanations on backend work)
+
+clickthrough.mp4: video of a clickthrough of the final product
 
 /lambda: folder that contains the python code for each of the lambda functions used in the backend
 
