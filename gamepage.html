@@ -33,7 +33,7 @@
                         <input id="guess_text" maxlength="1" pattern="[A-Za-z]" class="input" type="text" placeholder="Guess a Letter">
                         </div>
                         <div class="control">
-                        <a class="button is-info" onclick="guess_letter()">
+                        <a class="button is-info" onclick="async function tmp(){await guess_letter()} tmp()">
                             Submit
                         </a>
                         </div>

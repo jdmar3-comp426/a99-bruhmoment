@@ -25,7 +25,7 @@ async function generate_word(){
 }
 
 //update score function
-var update_score = (username, score, word) => {
+async function update_score (username, score, word){
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({"username":username, "score":score, "word":word});
@@ -44,15 +44,15 @@ var update_score = (username, score, word) => {
     }).catch(error => console.log('error', error));
 }
 
-function guess_letter(){
+async function guess_letter(){
     text_input = document.getElementById("guess_text").value;
     text_input = text_input.toLowerCase();
     text_input = text_input.match(/[A-Z]+|[a-z]+/gm)
 
     if(!(localStorage.getItem("letterBank").includes(text_input)) && text_input !== null){
         localStorage.setItem("letterBank", localStorage.getItem("letterBank") + text_input);
+        localStorage.numGuesses = parseInt(localStorage.numGuesses) + 1;
     }
-    localStorage.numGuesses = parseInt(localStorage.numGuesses) + 1
     document.getElementById("guess_text").value = "";
 }
 
@@ -72,7 +72,7 @@ function draw_board(){
             }
         }
         ctx.font = '3rem Arial';
-        ctx.fillText(`guesses: ${localStorage.numGuesses}`, canvas.width/2, 0+canvas.height/3.25);
+        ctx.fillText(`guesses: ${parseInt(localStorage.numGuesses)}`, canvas.width/2, 0+canvas.height/3.25);
         ctx.font = '6rem Arial';
         ctx.fillText(rendered_word, canvas.width/2, 0+canvas.height/1.25);
     }
@@ -107,7 +107,7 @@ async function game_loop(){
             }
         }
         if(numletters == 0){
-            update_score(localStorage.getItem("username"), (unique_letters.length/localStorage.numguesses)*Math.pow(unique_letters.length, 1.3), localStorage.getItem("word"));
+            await update_score(localStorage.getItem("username"), (unique_letters.length/localStorage.numGuesses)*Math.pow(unique_letters.length, 1.3), localStorage.getItem("word"));
             window.location.replace("../leaderboard.html")
             //AND reset following variables:
             // localStorage.word = null;
