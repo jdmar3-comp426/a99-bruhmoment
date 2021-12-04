@@ -1,16 +1,20 @@
-Our writeup:
+#Our writeup:
 
-files and their meanings-
+## Files and Their Meanings-
 
 api_calls.html: holds all of the various API calls 
 
 backend.pdf: details complete workings of the backend (look here for detailed explanations on backend work)
 
-create_account.js: holds the script with the signup api call as well as the call to create a score for a user, stores username in locat storage
+create_account.js: holds the script with the signup api call as well as the call to create a score for a user, stores username in local storage
 
 game_script.js: holds the scripts needed to generate a word as well as update user score. Runs the hangman game through a variety of different functions.
 
 login_manager.js: holds the script with the login api calls as well as stroing the username in local storage
+
+create_account.js holds the script to create a new entry in the user database and the score database and redirect the user to the login page
+
+leaderboard.js holds the scripts to display the leaderboard, play again, and logout
 
 createAccount.html: html for rendering the create account page
 
