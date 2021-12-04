@@ -25,7 +25,7 @@ async function generate_word(){
 }
 
 //update score function
-async function update_score (username, score, word){
+function update_score (username, score, word){
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var raw = JSON.stringify({"username":username, "score":score, "word":word});
@@ -41,6 +41,7 @@ async function update_score (username, score, word){
     .then(result => {
         console.log(result);
         console.log(JSON.parse(result).body.success);
+        window.location.replace("../leaderboard.html")
     }).catch(error => console.log('error', error));
 }
 
@@ -107,8 +108,7 @@ async function game_loop(){
             }
         }
         if(numletters == 0){
-            await update_score(localStorage.getItem("username"), (unique_letters.length/localStorage.numGuesses)*Math.pow(unique_letters.length, 1.3), localStorage.getItem("word"));
-            window.location.replace("../leaderboard.html")
+            update_score(localStorage.getItem("username"), (unique_letters.length/localStorage.numGuesses)*Math.pow(unique_letters.length, 1.3), localStorage.getItem("word"));
             //AND reset following variables:
             // localStorage.word = null;
             // localStorage.letterBank = "";
