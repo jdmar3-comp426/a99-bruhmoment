@@ -1,4 +1,4 @@
-#Our writeup:
+# Our writeup:
 
 ## Files and Their Meanings-
 
@@ -25,8 +25,7 @@ index.html: html for rendering the login page
 leaderboard.html: html for rendering the leaderboard page
 
 
-
-Our team work-
+## Our team work-
 
 Kian (User specialist): create login/signup scripts, worked with user accounts to save/retrieve user scores, helped with game script front end elements
 
