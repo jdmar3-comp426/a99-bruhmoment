@@ -13,18 +13,15 @@ async function generate_word(){
     }
     await fetch("https://bjpskapus9.execute-api.us-east-1.amazonaws.com/dev/app/generator", requestOptions)
     .then(response => response.text())
-    .then(result => find_new_word(result)).catch(error => console.log('error', error));
-}
-
-async function find_new_word(result){
-    if(JSON.parse(result).body.word.length <= 9){
-        localStorage.setItem("letterBank", "");
-        localStorage.numGuesses = 0;
-        localStorage.setItem("word", JSON.parse(result).body.word);
-        return true;
-    }else{
-        await generate_word()
-    }
+    .then(async (result)=>{
+        if(JSON.parse(result).body.word.length <= 9){
+            localStorage.setItem("letterBank", "");
+            localStorage.numGuesses = 0;
+            localStorage.setItem("word", JSON.parse(result).body.word);
+        }else{
+            await generate_word();
+        }
+    }).catch(error => console.log('error', error));
 }
 
 //update score function
@@ -59,8 +56,8 @@ function guess_letter(){
     document.getElementById("guess_text").value = "";
 }
 
-async function reset_board(){
-    await generate_word();
+function reset_board(){
+    localStorage.removeItem('word');
 }
 
 function draw_board(){
@@ -97,7 +94,7 @@ function findUnique(str){
 
 async function game_loop(){
     if (localStorage.getItem("word") === null){
-        await generate_word()
+        await generate_word();
     }
 
     if(localStorage.getItem("word") !== null){
